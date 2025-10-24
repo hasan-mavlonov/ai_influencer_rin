@@ -1,12 +1,12 @@
+# main.py
+# -*- coding: utf-8 -*-
+from rin.agent import RinAgent
 
+import sys
+sys.stdout.reconfigure(encoding='utf-8')
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press F9 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+if __name__ == "__main__":
+    print("🧠 Generating Rin’s post...")
+    rin = RinAgent()
+    caption = rin.generate_caption("weekend brunch at an aesthetic café")
+    print("\n💬 Rin’s caption:\n", caption)
