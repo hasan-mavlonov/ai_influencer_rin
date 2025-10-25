@@ -1,7 +1,30 @@
+# rin/memory_update.py
 import json
 from pathlib import Path
 from uuid import uuid4
 from .utils import get_embedding  # your embedding helper
+import json
+import numpy as np
+from .utils import get_embedding
+
+
+def cosine_similarity(a, b):
+    a, b = np.array(a), np.array(b)
+    return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
+
+
+def retrieve_relevant_memories(topic, memory_path, top_n=3):
+    topic_emb = get_embedding(topic)
+    with open(memory_path, "r", encoding="utf-8") as f:
+        memories = json.load(f)
+
+    scored = []
+    for m in memories:
+        if "embedding" in m:
+            score = cosine_similarity(topic_emb, m["embedding"])
+            scored.append((score, m))
+    scored.sort(reverse=True, key=lambda x: x[0])
+    return [m for _, m in scored[:top_n]]
 
 
 def update_memory(new_text: str, memory_path: str, metadata=None):
@@ -22,9 +45,10 @@ def update_memory(new_text: str, memory_path: str, metadata=None):
     if metadata is None:
         metadata = {"type": "caption", "persona": "rin"}
 
-    # Create new memory entry
+    embedding = get_embedding(new_text)
+
     new_entry = {
-        "id": str(uuid4()),  # unique ID
+        "id": str(uuid4()),
         "content": new_text,
         "metadata": metadata
     }
