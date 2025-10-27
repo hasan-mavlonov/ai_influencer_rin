@@ -1,10 +1,11 @@
+# rin/agent.py
 from .memory_update import retrieve_relevant_memories, update_memory
 from .utils import ollama_generate
 import random
 import json
 
 class RinAgent:
-    def __init__(self, memory_path="data/memories.json"):
+    def __init__(self, memory_path="C:\\Users\\user\\PycharmProjects\\ai_influencer_rin\\data\\memories.json"):
         self.memory_path = memory_path
 
     def generate_topic(self):
